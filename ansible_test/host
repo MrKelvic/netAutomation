@@ -1,0 +1,14 @@
+[cisco]
+spoke1 ip=192.168.122.210 ansible_network_os=ios
+spoke2 ip=192.168.122.207 ansible_network_os=ios
+
+[cisco:vars]
+# Must match Python that NAPALM is installed into.
+# ansible_python_interpreter=/home/kels/Documents/projects/netAutomation/autoMate/test_napalm/bin/python3
+ansible_python_interpreter=/home/kels/Documents/projects/netAutomation/autoMate/test_napalm/bin/python3
+# ansible_network_os=ios
+# Although specifying 'network_cli', NAPALM module will use AOS-CX REST
+ansible_connection=network_cli
+ansible_user=admin
+ansible_ssh_pass=admin
+ansible_python_interpreter=/home/kels/Documents/projects/netAutomation/autoMate/test_napalm/bin/python3

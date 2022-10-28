@@ -1,0 +1,20 @@
+---
+- name: Test Inventory #The Task Name
+  hosts: [switch]         #This will be in your ansible inventory file // [switch,router]
+  connection: local    #Required
+  gather_facts: false     #Do not gather facts
+  # debugger: on_failed
+
+  tasks:                                     #Begin Tasks
+    - name: get facts from device            #Task Name
+      napalm_get_facts:                      #Call the napalm module, in this case napal_get_facts
+        # optional_args: {'secret': password}  #The enable password for Cisco IOS
+        hostname: "{{ip}}" #This is a parameter and is derived from your ansible inventory file
+        username: "{{ansible_user}}"                     #The username to ssh with
+        dev_os: "{{ansible_network_os}}"                        #The hardware operating system
+        password: "{{ansible_ssh_pass}}"                 #The line level password
+        filter: 'facts'                      #The list of items you want to retrieve. The filter keyword is _inclusive_ of what you want
+      register: result                       #Ansible function for collecting output
+
+    - name: print results                    #Task Name
+      debug: msg="{{ result }}"              #Display the collected output

@@ -1,0 +1,58 @@
+{
+    "props":{
+        "hostname":"test212312"
+    },
+    "vlans":[
+        {
+            "id":2,
+            "name":"Data"
+        },
+        {
+            "id":3,
+            "name":"Voice"
+        },
+        {
+            "id":10,
+            "name":"MNGT"
+        }
+    ],
+    "user":{
+        "username":"admin",
+        "secret":"cisco"
+    },
+    "interfaces":[
+        {
+            "identifier":"g1/0/",
+            "ranges":[[1,5],[12,15]],
+            "mode":"access",
+            "vlanId":2,
+            "extras":[
+                "spanning-tree portfast",
+                "switchport host"
+
+            ]
+        },
+        {
+            "identifier":"v",
+            "ranges":[[10]],
+            "ips":[
+                {
+                    "id":10,
+                    "ip":"10.10.10.2",
+                    "mask":"255.255.255.0"
+                }
+            ],
+            "extras":[
+            ]
+        },
+        {
+            "identifier":"f1/0/",
+            "ranges":[[17,19]],
+            "mode":"access",
+            "vlanId":3,
+            "extras":[
+                "spanning-tree portfast"
+            ]
+        }
+    ]
+}

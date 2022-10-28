@@ -1,0 +1,11 @@
+---
+
+cisco:
+  hosts:
+    spoke1:
+      ip: "192.168.122.207"
+    spoke2:
+      ip: "192.168.122.210"
+  vars:
+      ansible_python_interpreter: /home/kels/Documents/projects/netAutomation/autoMate/test_napalm/bin/python3
+      ansible_persistent_log_messages: True

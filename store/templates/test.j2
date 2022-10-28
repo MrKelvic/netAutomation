@@ -1,0 +1,22 @@
+!
+
+hostname {{config['props']['hostname']}}
+
+{%- for vlan in config['vlans'] %}
+vlan {{vlan.id}}
+ name {{vlan.name}}
+{%- endfor %}
+
+{%- for interfaceConfig in config['interfaces']%}
+    {%- for interface in interfaceConfig['interfaces']%}
+interface {{interface}}
+        {%if interfaceConfig.mode%} switchport mode {{interfaceConfig.mode}} {%- endif%}
+        {%if interfaceConfig.vlanId%} switchport access vlan {{interfaceConfig.vlanId}} {%- endif%}
+        {%- for extra in interfaceConfig.extras%}
+ {{extra}}
+        {%- endfor%}
+ exit
+    {%- endfor%}
+{%endfor%}
+
+end
