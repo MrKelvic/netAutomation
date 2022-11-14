@@ -30,6 +30,7 @@ def engineFnMap(key):
         "findRouteTo":findRouteTo,
         "getConfig":getConfig,
         "cli":cli,
+        "stageOrPush":stageOrpush,
     }
     if key in maps:
         return maps[key]
@@ -122,7 +123,6 @@ class getVlans:
     def getOutput(self):
         return self.output
 
-
 class findRouteTo:
     def __init__(self, node,params=None):
         self.device=node["napalmInstance"]
@@ -136,7 +136,6 @@ class findRouteTo:
         self.web=temp[1]
     def getOutput(self):
         return self.output
-
         
 class ping:
     def __init__(self, node,params=None):
@@ -222,6 +221,54 @@ class cli:
         self.web=temp[1]
     def getOutput(self):
         return self.output
+
+class stageOrpush:
+    def __init__(self, node,params=[]):
+        # print(params)
+        self.device=node["napalmInstance"]
+        self.node=node["node"]
+        self.cli=[[],[]]
+        self.web=[{'title':'results','value':[]}]
+        self.output =[[],[]] # self.device.cli(params)
+        payload=str('')
+        if params[0] == 'stage':
+            # check if device has panding config rollback
+            for config in params[1]:
+                payload+=config['data']+'\n'
+            payload=payload+'\n'+'end'
+            print("\n Paload \n")
+            print(payload)
+
+# 273          0 Nov 01 2022 00:05:56 merge_config.txt
+# 274       3509 Nov 01 2022 00:05:58 candidate_config.txt
+
+        self.device.open()
+        print(params[0])
+        if params[0] == 'stage': #Stage but don't save config
+            print('\n*** Stage config ***\n')
+            # print('\n',"",'\n')
+            # remove whatever is pending
+            print('\n',"Removing all pending configs",'\n') 
+            self.device.discard_config()
+            print('\n',"Loading config to device ",'\n')
+            self.device.load_merge_candidate(config=payload)
+            changes=self.device.compare_config()
+            print('\n',"Changes",'\n',changes,'\n')
+            self.web=[{'title':'results','value':[changes]}]
+        elif params[0] == 'push': #Save config
+            print('*** Saving config ***')
+            print('\n',"Changes",'\n',self.device.compare_config(),'\n')
+            self.device.commit_config()
+            self.web=[{'title':'results','value':[True]}]
+        elif params[0] == 'discard':
+            print('*** Discard ***')
+            self.web=[{'title':'results','value':[True]}]
+            self.device.discard_config() #remove this
+
+        self.device.close()
+
+    # def getOutput(self):
+    #     return self.output
 
 
 #group what is in the self in a function
