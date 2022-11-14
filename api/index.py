@@ -24,10 +24,10 @@ def index():
 @cross_origin()
 def engine():
     httpParams=request.get_json() or {}
-    nodes=httpParams['nodes'] or []
-    engineFn=httpParams['engineFn'] or "info"
-    action=httpParams['action'] or "get"
-    params=httpParams['params'] or []
+    nodes=httpParams['nodes'] if 'nodes' in httpParams else []
+    engineFn=httpParams['engineFn'] if 'engineFn' in httpParams else "info"
+    action=httpParams['action'] if 'action' in httpParams else "get"
+    params=httpParams['params'] if 'params' in httpParams else []
     # print(nodes)
     # filter = request.args.get('filter', default = 0, type = int)
     # type=action
