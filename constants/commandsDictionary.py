@@ -14,6 +14,11 @@ def controlPlane():
                 "pid":'router ospf {}',
                 "network":['network ',['network','wildcard']]
             }
+        },
+        "static":{
+            "ios":{
+                "network":['ip route ',['network','mask','next_hop','AD']] #[Write "AD" ?,'AD']
+            }
         }
     }
 
@@ -22,6 +27,9 @@ def dataPlane():
     return {
         # if type LIST [command,[key1,key2]]
         # INTERFACES
+        "routed":{
+            'ios':'switchport'
+        },
         "mode":{
             'ios':'switchport mode {}'
         },
@@ -38,9 +46,6 @@ def dataPlane():
         },
         "data":{
             'ios':'switchport access vlan {}'
-        },
-        "routed":{
-            'ios':'switchport'
         },
         "ip":{
             'ios':['ip address {}',['ip','mask']]#' {}'
