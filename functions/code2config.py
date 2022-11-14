@@ -5,9 +5,9 @@ from ntc_templates import parse
 from textfsm import clitable
 from termcolor import colored
 spiner=yaspin(color="green")
-INFO_CLOR="#217fb7"
-DANG_CLOR="#eb0d0d"
-ADD_CLOR="#389e0d"
+INFO_CLOR="#239ae1"
+DANG_CLOR="#e33030"
+ADD_CLOR="#6acf40"
 # INTENT_PATH='/store/intents/'
 
 def referenceInstruction(obj,instruction,interfaceId,nodeState):
@@ -24,9 +24,6 @@ def referenceInstruction(obj,instruction,interfaceId,nodeState):
                     additional+=' '+nodeState['L3'][intSplit[0]]['members'][intSplit[1]][instruction[1][i]]
             obj[instruction[1][0]][refPoint] = obj[instruction[1][0]][refPoint] + additional
     return obj
-
-def handleRoutes():
-    print("Handle routes")
 
 def handleInterfaces(intCode,os,nodeState):
     print("Handle interfaces ",os)
@@ -46,7 +43,6 @@ def handleInterfaces(intCode,os,nodeState):
                 if ref not in interfaceCode[changesChild]:
                     # print("Skipping->> ",ref," in ",interfaceCode[changesChild])
                     continue
-
                 # print("cONTINUE <<-- ",ref," in ",interfaceCode[changesChild])
                 codeValues=interfaceCode[changesChild][ref] #{old:'',value:''}
                 cmdLine=refs[ref][os]
@@ -69,24 +65,83 @@ def handleInterfaces(intCode,os,nodeState):
                         if 'old' in codeValues:
                             cli.append({"data":str('no '+cmdLine).format(codeValues['old']),"color":DANG_CLOR})
                             print(colored(str('no '+cmdLine).format(codeValues['old']), 'red'))
+                            if not codeValues['value']:
+                                continue
                             cli.append({"data":str(cmdLine).format(codeValues['value']),"color":ADD_CLOR})
                             print(colored(str(cmdLine).format(codeValues['value']), 'green'))
                         else:
+                            if not codeValues['value']:
+                                continue
                             cli.append({"data":str(cmdLine).format(codeValues['value']),"color":ADD_CLOR})
                             print(colored(str(cmdLine).format(codeValues['value']), 'green'))
                     else:
                         # removing
+                        if not codeValues['value']:
+                            continue
                         cli.append({"data":str('no '+cmdLine).format(codeValues['value']),"color":DANG_CLOR})
                         print(colored(str('no '+cmdLine).format(codeValues['value']), 'red'))
+    return cli
 
         # Loop through changed
         # for change in interfaceCode[changesChild]
 
+def referenceInstructionCntrl(codeValues,instruction):
+    baseCmd=instruction[0]
+    for child in instruction[1]:
+        if child in codeValues:
+            baseCmd+=' '+str(codeValues[child])
+    return ('' if baseCmd==instruction[0] else baseCmd)
+
+
+def handleRoutes(intCode,os,nodeState):
+    print("Handle Routes ",os)
+    cli=[]
+    refs=cliReferences.references('routes') or {}
+    # Jump straight into changes objs
+    for actionType in ['added','changed','removed']:
+        if len(intCode) == 0:
+            return []
+        for actionObj in intCode[actionType]:#loop action array
+            # changed:{key:'',value:{AD:1,mask:0}}
+            topRefs=refs[actionObj['key']][os]#get reference from dict using actioObj key
+            # can have "value" or "old"
+            for varType in ['old',"value"]:
+                if varType in actionObj:
+                    valueDict=actionObj[varType] #list of values in actionObj
+                    for ref in topRefs:
+                        clr=ADD_CLOR
+                        # print(topRefs[ref])
+                        if not valueDict[ref]:
+                            continue
+                        cmd=str(topRefs[ref]).format(valueDict[ref])
+                        if type(topRefs[ref]).__name__=="list":
+                            cmd=referenceInstructionCntrl(valueDict,topRefs[ref])
+
+                        if ref in ['asn','pid']:
+                            if varType in ['old']:
+                                continue
+
+                            clr=INFO_CLOR
+                        if (varType in ['old'] or actionType in ['removed']) and ref not in ['pid']:
+                            clr=DANG_CLOR
+                            cmd='no '+cmd
+
+                        prClrMap={
+                            "#239ae1":'blue',
+                            "#e33030":'red',
+                            "#6acf40":'green'
+                        }
+                        print(colored(cmd,prClrMap[clr]))
+                        cli.append({"data":cmd,"color":clr})
+    return cli
+                            
+
 
 def index(code,node):
-    configArray=[]
-    # print(code)
-    interfacesConfig=handleInterfaces(code['interfaces'],node['node']["OS"],node['state'])
+    dataPlanePlaneConfig=handleInterfaces(code['interfaces'],node['node']["OS"],node['state'])
+    controlConfig=handleRoutes(code['routes'],node['node']["OS"],node['state'])
+    return dataPlanePlaneConfig+controlConfig
+
 
 
 if __name__ == '__main__':
