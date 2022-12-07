@@ -53,7 +53,7 @@ def report():
             splittedValues=filePath.split("/")
             nameOfFile=splittedValues.pop()
             if '-'.join(splittedValues) == 'store-temp-reports':
-                return send_file("../"+filePath,as_attachment=True,attachment_filename='AutomatedReport'+nameOfFile)
+                return send_file("../"+filePath,as_attachment=True,download_name='AutomatedReport'+nameOfFile)
             else:
                 return "Opps"
         else:
