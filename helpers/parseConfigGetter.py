@@ -172,8 +172,9 @@ def interfaces(state,values,key,description,stringToJsonRule=None,AllowString=Fa
                     (value["mask"] if type(value["mask"]).__name__=='str' else value["mask"][0]),
                 ]
                 ip=str(IP(str(tempIp[0]+'/'+tempIp[1]),make_net=True).strNormal(2)).split("/")
+                print(str(IP(str(tempIp[0]+'/'+tempIp[1]),make_net=True).strNormal(2)))
                 state[pKey][refKey]["ip"]=tempIp[0] #ip[0]
-                state[pKey][refKey]["mask"]=ip[1]
+                state[pKey][refKey]["mask"]=ip[1] if(len(ip)>1) else '255.255.255.255'
             else:
                 state[pKey][refKey]["ip"]=""
                 state[pKey][refKey]["mask"]=""
