@@ -24,7 +24,7 @@ This project is a tool built to aid the administration of network devices ie, ro
 ## File Structure
 
 This section provides a brief overview of the project's file structure, highlighting key directories and files, and their purposes. It may also include descriptions of any important configuration files, templates, or other relevant files.
-`
+
 ./
 ├── ansible_test
 │   ├── ansible.cfg
@@ -76,7 +76,6 @@ This section provides a brief overview of the project's file structure, highligh
 │   │   │   ├── hubsw.config
 │   │   │   └── spoke4.config
 │   │   ├── host            # Stores temporal variables for Ansible
-
 `
 
 ## Branches
