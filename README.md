@@ -26,62 +26,55 @@ This project is a tool built to aid the administration of network devices ie, ro
 This section provides a brief overview of the project's file structure, highlighting key directories and files, and their purposes. It may also include descriptions of any important configuration files, templates, or other relevant files.
 ./
 ├── ansible_test
-│   ├── ansible.cfg
-│   ├── host
-│   ├── host.yml
-│   ├── playbook.yaml
-│   └── runAnsible.py
-├── api		#dir for all http API from front-end 
-│   └── index.py
+│   ├── ansible.cfg
+│   ├── host
+│   ├── host.yml
+│   ├── playbook.yaml
+│   └── runAnsible.py
+├── api                       # Directory for all HTTP APIs from front-end
+│   └── index.py
 ├── assets
-│   └── TESTDATA.json		#Example of assets inventory
-├── basebranchsw.json 		#proposed code description for device config (**ABSOLUTE**)
-├── cleaners		#Folder for parsing data to useable formats
-│   └── generateInventory.py		#used to generate JSON inventory from `/assets/RAWASSETS.xlsx`
-├── constants		# stores fixed variables that do not change but are used in other parts of the code
-│   ├── commandsDictionary.py		#fixed dictionary functions to convert device code description to raw config
-│   └── commands.py		#fixed cli commands and function props for pulling device config
-├── controller		#interactive CLI controls for CLI ui usage
-│   ├── initInteract.py		#Handles user CLI interaction
-│   └── prompts.py		#Handles user prompts and inputs in CLI mode
-├── depend.txt		#list of dependancies for project
-├── functions		#main functions for communicating to network devices 
-│   ├── code2config.py		#converts device code formated config to raw condif using `/constants/commandsDictionary.py` as a param
-│   ├── config2code.py		#converts raw device config to code format using `/constants/commands.py` as a param
-│   ├── engineBase.py		#entry point for accessing `engine.py`
-│   ├── engine.py		#contains classes responsible for communicating to network devices
-│   ├── filter.py		#used to parse response from `engine.py` classes into CLI or Web format (JSON)
-│   ├── jinjaGenarator.py		#proposed template generator to convert code config to raw device config (**ABSOLUTE**)
-│   ├── params.py		#converts CLI ui inputs to useable format
-│   └── web.py (**ABSOLUTE**)
-├── helpers		#functions used globaly as helper functions
-│   ├── confparser.py		 #Parse raw config to JSON (third-party scripts)
-│   ├── digestConfig2code.py		#convert JSON config to code config
-│   ├── files.py		#write to files (overwrites)
-│   ├── getInventary.py		#perform CRUD functions on inventory at `/assets/TESTDATA.json`
-│   ├── interfaceMapper.py		#convert interface name `Gi->GigabitEthernent`
-│   ├── parseConfigGetter.py #main function that converts json config into code format (data and control planes)
-│   └── writeToExcel.py		#writes WEB and CLI outputs into excel for reporting
-├── index.py		#Entry point of application
+│   └── TESTDATA.json        # Example of assets inventory
+├── basebranchsw.json        # Proposed code description for device config (**ABSOLUTE**)
+├── cleaners                 # Folder for parsing data to usable formats
+│   └── generateInventory.py # Used to generate JSON inventory from `/assets/RAWASSETS.xlsx`
+├── constants                # Stores fixed variables that do not change but are used in other parts of the code
+│   ├── commandsDictionary.py # Fixed dictionary functions to convert device code description to raw config
+│   └── commands.py           # Fixed CLI commands and function props for pulling device config
+├── controller               # Interactive CLI controls for CLI UI usage
+│   ├── initInteract.py      # Handles user CLI interaction
+│   └── prompts.py           # Handles user prompts and inputs in CLI mode
+├── depend.txt               # List of dependencies for the project
+├── functions                # Main functions for communicating to network devices
+│   ├── code2config.py       # Converts device code formatted config to raw config using `/constants/commandsDictionary.py` as a parameter
+│   ├── config2code.py       # Converts raw device config to code format using `/constants/commands.py` as a parameter
+│   ├── engineBase.py        # Entry point for accessing `engine.py`
+│   ├── engine.py            # Contains classes responsible for communicating to network devices
+│   ├── filter.py            # Used to parse response from `engine.py` classes into CLI or Web format (JSON)
+│   ├── jinjaGenarator.py    # Proposed template generator to convert code config to raw device config (**ABSOLUTE**)
+│   ├── params.py            # Converts CLI UI inputs to usable format
+│   └── web.py (**ABSOLUTE**)
+├── helpers                  # Functions used globally as helper functions
+│   ├── confparser.py        # Parse raw config to JSON (third-party scripts)
+│   ├── digestConfig2code.py # Convert JSON config to code config
+│   ├── files.py             # Write to files (overwrites)
+│   ├── getInventary.py      # Perform CRUD functions on inventory at `/assets/TESTDATA.json`
+│   ├── interfaceMapper.py   # Convert interface name `Gi->GigabitEthernet`
+│   ├── parseConfigGetter.py # Main function that converts JSON config into code format (data and control planes)
+│   └── writeToExcel.py      # Writes WEB and CLI outputs into Excel for reporting
+├── index.py                 # Entry point of application
 ├── init.sh
 ├── README.md
 ├── setup.sh
-├── store		#stores all code generated files
-│   ├── intents		#stores device code config (`DeviceName_IP`)
-│   │   └── OSPF1_192.168.122.230.json		#intents sample
-│   │   └── spoke1_192.168.122.207.json
-│   ├── temp		#stores temporal files
-│   │   ├── configs		#stores raw device config
-│   │   │   ├── hubsw.config
-│   │   │   └── spoke4.config
-│   │   ├── host		#stores temporal variables for ansible
-│   │   │   └── host
-│   │   └── reports 		#stores reports
-│   │       └── 4ad0f8080a154efdb56e143bfe6bca64.xlsx
-│   └── templates (**ABSOLUTE**)
-│       ├── hubsw.j2
-│       └── test.j2
-└── testfn.py
+├── store                    # Stores all code-generated files
+│   ├── intents             # Stores device code config (`DeviceName_IP`)
+│   │   └── OSPF1_192.168.122.230.json # Intents sample
+│   │   └── spoke1_192.168.122.207.json
+│   ├── temp                # Stores temporal files
+│   │   ├── configs         # Stores raw device config
+│   │   │   ├── hubsw.config
+│   │   │   └── spoke4.config
+│   │   ├── host            # Stores temporal variables for Ansible
 
 
 
